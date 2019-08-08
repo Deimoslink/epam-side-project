@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from '../../core/authentication.service';
 
 @Component({
   selector: 'esp-login',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService) { }
+
+  public logIn(login: string, password: string) {
+    this.authenticationService.login(login, password)
+  }
 
   ngOnInit() {
   }

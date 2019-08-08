@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {AuthenticationService} from './core/authentication.service';
 
 @Component({
   selector: 'esp-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'epam-side-project';
+
+  public logout(): void {
+    this.authenticationService.logout();
+  }
+
+  constructor(private authenticationService: AuthenticationService) { }
+
+
 }
