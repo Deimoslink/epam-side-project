@@ -1,0 +1,26 @@
+@import '~@angular/material/theming';
+
+$app-primary: mat-palette($mat-grey);
+$app-accent: mat-palette($mat-light-blue);
+$app-warn: mat-palette($mat-pink);
+
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+
+$app-border: mat-color(mat-palette($mat-grey, 300));
+$orange: mat-color(mat-palette($mat-deep-orange));
+$indigo: mat-color(mat-palette($mat-indigo));
+
+@mixin square($side) {
+  height: $side;
+  min-height: $side;
+  width: $side;
+  min-width: $side;
+}
+
+@mixin absolute($top, $left) {
+  position: absolute;
+  top: $top;
+  left: $left;
+}
