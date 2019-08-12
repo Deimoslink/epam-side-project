@@ -7,6 +7,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CoreModule} from './core/core.module';
 import {RouterModule} from "@angular/router";
+import {MDBBootstrapModule} from 'angular-bootstrap-md';
 
 @NgModule({
   declarations: [
@@ -18,9 +19,10 @@ import {RouterModule} from "@angular/router";
     AppRoutingModule,
     NgbModule,
     BrowserAnimationsModule,
-    CoreModule
+    CoreModule,
+    MDBBootstrapModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
