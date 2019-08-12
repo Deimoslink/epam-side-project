@@ -1,0 +1,49 @@
+@import './../_variables.scss';
+
+.sidenav {
+  overflow: visible;
+}
+
+.sidenav-button {
+  @include square(40px);
+  clip-path: polygon(100% 0, 7% 0, 100% 93%);
+  border-radius: 4px;
+  position: absolute;
+  top: 50px;
+  right: -18px;
+  background-color: white;
+  padding: 0;
+  border: 1px solid $app-border;
+  transform: rotate(45deg);
+  transform-origin: center;
+  visibility: visible !important;
+  span {
+    transition: all 0.2s linear;
+    transform: rotate(-135deg);
+    transform-origin: unset;
+    position: absolute;
+    left: 20px;
+    top: -4px;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: #fafafa;
+  }
+  &.opened{
+    span {
+      transform: rotate(45deg);
+      left: 24px;
+      top: -8px;
+    }
+  }
+}
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+

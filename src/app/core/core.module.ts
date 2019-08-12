@@ -1,14 +1,26 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {AuthModule} from './auth/auth.module';
+import {MaterialModule} from './material/material.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AppLogoComponent} from '../shared/app-logo/app-logo.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AppLogoComponent
+  ],
   imports: [
-    CommonModule,
-    AuthModule
+    AuthModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  exports: [
+    AppLogoComponent,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class CoreModule { }

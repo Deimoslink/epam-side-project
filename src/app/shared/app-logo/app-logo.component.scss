@@ -1,0 +1,41 @@
+@import './../../../_variables.scss';
+
+.logo-wrapper {
+  @include square(144px);
+  position: relative;
+  margin: auto;
+}
+.logo {
+  @include square(89px);
+  @include absolute(27.5px, 27.5px);
+  transform: rotate(-45deg);
+  transform-origin: center;
+  background-color: $accent;
+  animation: roll1 10s infinite;
+}
+.logo2 {
+  @include square(55px);
+  @include absolute(17px, 17px);
+  transform: rotate(45deg);
+  transform-origin: center;
+  background-color: $warn;
+  animation: roll2 10s infinite;
+}
+.logo3 {
+  @include square(34px);
+  @include absolute(10.5px, 10.5px);
+  transform: rotate(-45deg);
+  transform-origin: center;
+  background-color: $indigo;
+  animation: roll3 10s infinite;
+}
+
+@keyframes roll1 {
+  10%, 100% {transform: rotate(45deg)}
+}
+@keyframes roll2 {
+  10%, 100% {transform: rotate(-135deg)}
+}
+@keyframes roll3 {
+  10%, 100% {transform: rotate(135deg)}
+}
