@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../core/authentication.service';
 
 @Component({
-  selector: 'esp-login',
+  selector: 'tdct-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   encapsulation: ViewEncapsulation.None

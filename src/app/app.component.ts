@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AuthenticationService} from './core/authentication.service';
 
 @Component({
-  selector: 'esp-root',
+  selector: 'tdct-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
