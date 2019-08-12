@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'esp-business-entities',
+  selector: 'tdct-business-entities',
   templateUrl: './business-entities.component.html',
   styleUrls: ['./business-entities.component.scss']
 })

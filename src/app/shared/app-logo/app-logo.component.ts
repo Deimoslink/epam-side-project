@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'esp-app-logo',
+  selector: 'tdct-app-logo',
   templateUrl: './app-logo.component.html',
   styleUrls: ['./app-logo.component.scss']
 })

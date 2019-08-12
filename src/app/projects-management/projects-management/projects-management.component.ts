@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'esp-projects-management',
+  selector: 'tdct-projects-management',
   templateUrl: './projects-management.component.html',
   styleUrls: ['./projects-management.component.scss']
 })
