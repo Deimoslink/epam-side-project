@@ -1,1 +1,41 @@
-<p>projects-management works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="table-wrapper mat-elevation-z8">
+        <mat-table matSort
+                   class="w-100"
+                   [dataSource]="sortedData"
+                   [matSortDisableClear]="true"
+                   (matSortChange)="sortData($event)">
+
+          <ng-container *ngFor="let column of COLUMNS" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-form-field style="margin-bottom: -15px; width: calc(100% - 3em)">
+                <input matInput placeholder="{{column[0].toUpperCase() + column.substring(1)}}">
+              </mat-form-field>
+              <div mat-sort-header style="margin-bottom: -15px"></div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+          </ng-container>
+
+          <!--<ng-container *ngFor="let column of COLUMNS_FILTERS" [matColumnDef]="column">-->
+            <!--<th mat-header-cell *matHeaderCellDef>-->
+              <!--<mat-form-field>-->
+                <!--<input matInput placeholder="">-->
+              <!--</mat-form-field>-->
+            <!--</th>-->
+          <!--</ng-container>-->
+
+          <mat-header-row *matHeaderRowDef="COLUMNS"></mat-header-row>
+          <!--<tr mat-header-row *matHeaderRowDef="COLUMNS_FILTERS"></tr>-->
+          <mat-row *matRowDef="let row; columns: COLUMNS;"></mat-row>
+
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                       [length]="totalElems"
+                       (page)="pageChanged($event)"
+                       [showFirstLastButtons]="true"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,7 @@ import {User} from './interfaces/user.interface';
 })
 export class UserService {
 
-  private user: User | null;
+  private user: User | null = {id: 'string', name: 'string'};
 
   constructor() {}
 

@@ -2,9 +2,9 @@ import {NgModule} from '@angular/core';
 import {
   MatButtonModule, MatCardModule, MatDividerModule,
   MatExpansionModule, MatFormFieldModule,
-  MatGridListModule, MatIconModule, MatInputModule, MatListModule,
+  MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatPaginatorModule,
   MatRadioModule,
-  MatSidenavModule
+  MatSidenavModule, MatSortModule, MatTableModule
 } from '@angular/material';
 
 
@@ -20,7 +20,10 @@ import {
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   exports: [
     MatSidenavModule,
@@ -33,7 +36,10 @@ import {
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
 })
 export class MaterialModule { }
