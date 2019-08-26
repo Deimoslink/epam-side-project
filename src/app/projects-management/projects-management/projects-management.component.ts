@@ -1,13 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Sort} from '@angular/material/sort';
-import {MatPaginator, PageEvent} from "@angular/material";
-
-export interface PeriodicElement {
-  position: number;
-  name: string;
-  weight: number;
-  symbol: string;
-}
+import {MatPaginator, PageEvent} from '@angular/material';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {debounceTime, map, scan, takeUntil, merge} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'tdct-projects-management',
@@ -17,51 +13,80 @@ export interface PeriodicElement {
 export class ProjectsManagementComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  private data: PeriodicElement[] = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-    {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-    {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-    {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-    {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-    {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-    {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-    {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-    {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-    {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-    {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-    {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-    {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-  ];
-  public totalElems = 123;
-  public pageSize = 5;
-  public sortedData = this.data;
-  public COLUMNS = ['position', 'name', 'weight', 'symbol'];
-  public COLUMNS_FILTERS = this.COLUMNS.map(el => el + '_filter');
+  private subscription = new Subject<void>();
+  private filters = new Subject<any>();
+  private pages = new Subject<PageEvent>();
+  public pageSize = 10;
+  private sorting = new Subject<any>();
+  private requests = new ReplaySubject<any>();
+  public filterState: any = {};
+  public defaultSortOrder = {
+    active: 'name',
+    direction: 'asc'
+  };
 
-  sortData(sort: Sort) {
-    console.log(sort);
+
+  public data: any[] = [];
+  public totalElems = 0;
+  public COLUMNS = ['id', 'name', 'company', 'balance'];
+
+  public sortData(sort: Sort) {
+    this.sorting.next(sort);
   }
 
-  pageChanged(pageEvent: PageEvent) {
-    if (this.pageSize !== pageEvent.pageSize) {
-      this.paginator.firstPage();
+  public filterChanged(column: string, value: string) {
+    this.filters.next({[column]: value});
+  }
+
+  public pageChanged(pageEvent: PageEvent) {
+    this.pages.next(pageEvent);
+  }
+
+  public getData(pageIndex, pageSize, sort, filters): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/data?_page=${pageIndex}&_limit=${pageSize}&_sort=${sort.active}&_order=${sort.direction}&${filters.join('&')}`, {observe: 'response'});
+  }
+
+  constructor(private readonly http: HttpClient) { }
+
+  applyFilters(filters): string[] {
+    if (filters) {
+      return Object.keys(filters).map(filter => {
+        return filters[filter] ? `${filter}_like=${filters[filter]}` : '';
+      })
+    } else {
+      return [''];
     }
-    this.pageSize = pageEvent.pageSize;
-    console.log(pageEvent);
   }
-
-
-
-  constructor() { }
 
   ngOnInit() {
+    this.requests.pipe(
+      takeUntil(this.subscription),
+      merge(this.pages.pipe(
+        map(pageEvent => ({pageIndex: pageEvent.pageIndex, pageSize: pageEvent.pageSize}))
+      )),
+      merge(this.filters.pipe(
+        debounceTime(300),
+        map(filter => {
+          this.filterState = Object.assign(this.filterState, filter);
+          this.paginator.firstPage();
+          return this.filterState;
+        }),
+        map(filter => ({filters: filter, pageIndex: 0}))
+      )),
+      merge(this.sorting.pipe(
+        map(sorting => ({sort: sorting}))
+      )),
+      scan((query: any, part: any) => ({...query, ...part}), {}),
+      map(query => {
+        this.getData(query.pageIndex + 1, query.pageSize, query.sort, this.applyFilters(query.filters)).subscribe(res => {
+          this.totalElems = res.headers.get('X-Total-Count');
+          this.data = res.body;
+        });
+      })
+    ).subscribe();
+
+    this.requests.next({pageIndex: 0, pageSize: this.pageSize, filters: null, sort: this.defaultSortOrder});
   }
 
 }

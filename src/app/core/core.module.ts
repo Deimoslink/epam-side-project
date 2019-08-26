@@ -3,6 +3,7 @@ import {AuthModule} from './auth/auth.module';
 import {MaterialModule} from './material/material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppLogoComponent} from '../shared/app-logo/app-logo.component';
+import {HttpClientModule} from "@angular/common/http";
 
 
 
@@ -14,13 +15,15 @@ import {AppLogoComponent} from '../shared/app-logo/app-logo.component';
     AuthModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   exports: [
     AppLogoComponent,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ]
 })
 export class CoreModule { }
