@@ -8,14 +8,17 @@
                    [matSortDirection]="defaultSortOrder.direction"
                    [dataSource]="data"
                    [matSortDisableClear]="true"
-                   (matSortChange)="sortData($event)">
+                   (matSortChange)="sortChanged($event)">
 
           <ng-container *ngFor="let column of COLUMNS" [matColumnDef]="column">
             <mat-header-cell *matHeaderCellDef>
-              <mat-form-field style="margin-bottom: -15px; width: calc(100% - 3em)">
-                <input matInput placeholder="{{column[0].toUpperCase() + column.substring(1)}}" ngModel (ngModelChange)="filterChanged(column, $event)">
+              <mat-form-field class="table-header-input-wrapper">
+                <input matInput
+                       ngModel
+                       (ngModelChange)="filterChanged(column, $event)"
+                       placeholder="{{column[0].toUpperCase() + column.substring(1)}}">
               </mat-form-field>
-              <div mat-sort-header style="margin-bottom: -15px"></div>
+              <div mat-sort-header class="table-header-sort-button-wrapper"></div>
             </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
           </ng-container>
@@ -26,7 +29,7 @@
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                        [pageSize]="pageSize"
-                       [length]="totalElems"
+                       [length]="totalElements"
                        (page)="pageChanged($event)"
                        [showFirstLastButtons]="true"></mat-paginator>
       </div>

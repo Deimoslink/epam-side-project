@@ -9,3 +9,11 @@ button:focus {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.table-header-input-wrapper {
+  margin-bottom: -15px;
+  width: calc(100% - 3em);
+}
+.table-header-sort-button-wrapper {
+  margin-bottom: -15px;
+}
