@@ -1,7 +1,10 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="table-wrapper mat-elevation-z8">
+      <div class="table-wrapper mat-elevation-z8 position-relative">
+        <div *ngIf="loadingInProgress" class="example-loading-shade">
+          <mat-spinner></mat-spinner>
+        </div>
         <mat-table matSort
                    class="w-100"
                    [matSortActive]="defaultSortOrder.active"
