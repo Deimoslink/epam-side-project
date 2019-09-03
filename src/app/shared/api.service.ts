@@ -8,6 +8,8 @@ import {Sort} from '@angular/material';
   providedIn: 'root'
 })
 export class ApiService {
+  private readonly BASE_URL = 'https://json-server-backend.herokuapp.com/data';
+  // private readonly BASE_URL = 'http://localhost:3000/data';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -33,7 +35,7 @@ export class ApiService {
 
   public getProjects(query: PaginatedRequestQuery): Observable<any> {
     return this.http.get<any>(
-      `https://json-server-backend.herokuapp.com/data`,
+      this.BASE_URL,
       {
         observe: 'response',
         params: this.queryToParams(query)

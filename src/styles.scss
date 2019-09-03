@@ -3,11 +3,32 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+
+@mixin mat-table-columns($columns) {
+  .mat-column- {
+    @each $colName, $props in $columns {
+      $width: map-get($props, 'width');
+      &#{$colName} {
+        flex: $width;
+        min-width: $width;
+        @if map-has-key($props, 'color') {
+          color: map-get($props, 'color');
+        }
+      }
+    }
+  }
+}
+
 button:focus {
   outline: 0;
 }
 .cursor-pointer {
   cursor: pointer;
+}
+
+button.fa-button {
+  width: 2.5rem;
+  min-width: 2.5rem;
 }
 
 // TABLE STYLES
@@ -21,9 +42,9 @@ button:focus {
 }
 .example-loading-shade {
   position: absolute;
-  top: 56px;
+  top: calc(1.5rem + 56px);
   left: 0;
-  bottom: 56px;
+  bottom: calc(1.5rem + 56px);
   right: 0;
   background: rgba(0, 0, 0, 0.15);
   z-index: 1;

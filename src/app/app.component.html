@@ -5,29 +5,31 @@
             (click)="sidenav.toggle()">
       <span class="mat-expansion-indicator"></span>
     </button>
-    <tdct-app-logo></tdct-app-logo>
+    <tdct-app-logo [routerLink]="['dashboard']"></tdct-app-logo>
     <ng-container *ngFor="let item of data">
-      <mat-expansion-panel *ngIf="item.items">
+      <mat-expansion-panel *ngIf="item.items" class="mat-elevation-z0">
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{item.title}}
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <mat-list>
-          <mat-list-item *ngFor="let subitem of item.items">
-            <button mat-button [routerLink]="[subitem.link]">{{subitem.title}}</button>
-          </mat-list-item>
-        </mat-list>
+            <button *ngFor="let subitem of item.items"
+                    mat-button
+                    class="w-100 text-left"
+                    [routerLink]="[subitem.link]">{{subitem.title}}</button>
+
 
       </mat-expansion-panel>
 
     </ng-container>
-    <mat-list>
-      <mat-list-item>
-        <button mat-button (click)="logout()"><i class="fa fa-sign-out"></i> Logout</button>
-      </mat-list-item>
-    </mat-list>
+    <!--<mat-list>-->
+      <!--<mat-list-item>-->
+        <button mat-button
+                class="w-100 text-left"
+                (click)="logout()"><i class="fa fa-sign-out"></i> Logout</button>
+      <!--</mat-list-item>-->
+    <!--</mat-list>-->
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">

@@ -4,6 +4,9 @@
   @include square(144px);
   position: relative;
   margin: auto;
+  &:focus {
+    outline: 0;
+  }
 }
 .logo {
   @include square(89px);

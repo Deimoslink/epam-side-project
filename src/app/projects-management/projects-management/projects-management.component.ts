@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Sort} from '@angular/material/sort';
-import {MatPaginator, PageEvent} from '@angular/material';
+import {MatDialog, MatPaginator, PageEvent} from '@angular/material';
 import {Subject} from 'rxjs';
 import {debounceTime, map, scan, takeUntil, merge} from 'rxjs/operators';
 import {Filters, PaginatedRequestQuery} from '../../shared/interfaces';
 import {ApiService} from "../../shared/api.service";
+import {AddEditProjectComponent} from '../add-edit-project/add-edit-project.component';
 
 @Component({
   selector: 'tdct-projects-management',
@@ -32,7 +33,7 @@ export class ProjectsManagementComponent implements OnInit {
 
   public loadingInProgress = false;
 
-  constructor(private readonly api: ApiService) { }
+  constructor(private api: ApiService, public dialog: MatDialog) { }
 
   public sortChanged(sort: Sort) {
     this.sorting.next(sort);
@@ -44,6 +45,16 @@ export class ProjectsManagementComponent implements OnInit {
 
   public pageChanged(pageEvent: PageEvent) {
     this.pagination.next(pageEvent);
+  }
+
+  public editProject(item: any) {
+    const dialogRef = this.dialog.open(AddEditProjectComponent, {
+      width: '640px',
+      data: item
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   ngOnInit() {

@@ -1,5 +1,9 @@
 @import './../_variables.scss';
 
+tdct-app-logo:focus {
+  outline: 0;
+}
+
 .sidenav {
   overflow: visible;
 }
