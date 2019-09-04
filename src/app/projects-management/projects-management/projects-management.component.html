@@ -1,10 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="mat-elevation-z8 position-relative p-4 table-wrapper">
-        <div *ngIf="loadingInProgress" class="example-loading-shade">
-          <mat-spinner></mat-spinner>
-        </div>
+      <div class="mat-elevation-z8 position-relative mt-5 p-4 table-wrapper">
         <mat-table matSort
                    class="w-100"
                    [matSortActive]="defaultSortOrder.active"
@@ -40,19 +37,17 @@
           <mat-row *matRowDef="let row; columns: COLUMNS;"></mat-row>
 
         </mat-table>
+        <div *ngIf="!data || !data.length" class="mt-5 mb-5 text-center">No results found</div>
+        <mat-progress-bar *ngIf="loadingInProgress" mode="indeterminate"></mat-progress-bar>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                        [pageSize]="pageSize"
                        [length]="totalElements"
                        (page)="pageChanged($event)"
                        [showFirstLastButtons]="true"></mat-paginator>
+        <div class="table-footer-controls">
+          <button mat-raised-button color="primary">Add New Project</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<!--<button mat-raised-button>Basic</button>-->
-<!--<button mat-raised-button color="primary">Primary</button>-->
-<!--<button mat-raised-button color="accent">Accent</button>-->
-<!--<button mat-raised-button color="warn">Warn</button>-->
-<!--<button mat-raised-button disabled>Disabled</button>-->

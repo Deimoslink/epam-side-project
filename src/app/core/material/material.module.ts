@@ -1,10 +1,22 @@
 import {NgModule} from '@angular/core';
 import {
-  MatButtonModule, MatCardModule, MatDialogModule, MatDividerModule,
-  MatExpansionModule, MatFormFieldModule,
-  MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
-  MatSidenavModule, MatSortModule, MatTableModule
+  MatSidenavModule,
+  MatSortModule,
+  MatTableModule
 } from '@angular/material';
 
 
@@ -25,7 +37,8 @@ import {
     MatSortModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBarModule
   ],
   exports: [
     MatSidenavModule,
@@ -43,7 +56,8 @@ import {
     MatSortModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBarModule
   ],
 })
 export class MaterialModule { }
