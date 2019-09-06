@@ -6,6 +6,8 @@ import {AppLogoComponent} from '../shared/app-logo/app-logo.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FooterComponent} from '../shared/footer/footer.component';
 import {HeaderComponent} from '../shared/header/header.component';
+import {TypeaheadModule} from '../shared/typeahead/typeahead.module';
+import {PipesModule} from "./pipes/pipes.module";
 
 
 
@@ -29,7 +31,9 @@ import {HeaderComponent} from '../shared/header/header.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    TypeaheadModule,
+    PipesModule
   ]
 })
 export class CoreModule { }

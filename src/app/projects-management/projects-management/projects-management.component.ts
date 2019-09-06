@@ -50,6 +50,9 @@ export class ProjectsManagementComponent implements OnInit {
   public editProject(item: any) {
     const dialogRef = this.dialog.open(AddEditProjectComponent, {
       width: '640px',
+      height: 'calc(100vh - 8em)',
+      minHeight: 'auto',
+      maxHeight: 'auto',
       data: item
     });
     dialogRef.afterClosed().subscribe(result => {
