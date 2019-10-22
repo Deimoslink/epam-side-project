@@ -1,0 +1,20 @@
+<h1 mat-dialog-title class="mb-2">Add Project</h1>
+
+<div mat-dialog-content>
+  <div class="row">
+    <div class="offset-4 col-4">
+      <form [formGroup]="fg">
+        <mat-form-field>
+          <input formControlName="projectName" matInput placeholder="project name">
+          <mat-error *ngIf="fg.controls['projectName'].invalid">Project Name is mandatory</mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="fg.invalid || fg.pristine" (click)="onSave()">Save</button>
+</div>
+

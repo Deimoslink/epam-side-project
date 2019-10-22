@@ -16,7 +16,7 @@
                 <input matInput
                        ngModel
                        (ngModelChange)="filterChanged(column, $event)"
-                       placeholder="{{column[0].toUpperCase() + column.substring(1)}}">
+                       [placeholder]="PLACEHOLDERS[column]">
               </mat-form-field>
               <div *ngIf="column !== 'id'" mat-sort-header class="table-header-sort-button-wrapper"></div>
             </mat-header-cell>
@@ -45,7 +45,7 @@
                        (page)="pageChanged($event)"
                        [showFirstLastButtons]="true"></mat-paginator>
         <div class="table-footer-controls">
-          <button mat-raised-button color="primary">Add New Project</button>
+          <button mat-raised-button color="primary" (click)="addProject()">Add New Project</button>
         </div>
       </div>
     </div>

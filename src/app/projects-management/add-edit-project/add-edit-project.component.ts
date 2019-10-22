@@ -31,7 +31,7 @@ export class AddEditProjectComponent {
 
   }
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 

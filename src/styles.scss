@@ -52,3 +52,8 @@ button.fa-button {
   align-items: center;
   justify-content: center;
 }
+// modals
+.mat-dialog-container {
+  position: relative;
+  overflow: hidden !important;
+}

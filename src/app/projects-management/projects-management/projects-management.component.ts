@@ -6,6 +6,7 @@ import {debounceTime, map, scan, takeUntil, merge} from 'rxjs/operators';
 import {Filters, PaginatedRequestQuery} from '../../shared/interfaces';
 import {ApiService} from "../../shared/api.service";
 import {AddEditProjectComponent} from '../add-edit-project/add-edit-project.component';
+import {AddProjectModalComponent} from "../add-project-modal/add-project-modal.component";
 
 @Component({
   selector: 'tdct-projects-management',
@@ -30,6 +31,11 @@ export class ProjectsManagementComponent implements OnInit {
   public pageSize = 10;
   public totalElements = 0;
   public readonly COLUMNS = ['id', 'name', 'company', 'balance'];
+  public readonly PLACEHOLDERS = {
+    'name': 'Manager Name',
+    'company': 'Project Name',
+    'balance': 'Balance'
+  };
 
   public loadingInProgress = false;
 
@@ -54,6 +60,18 @@ export class ProjectsManagementComponent implements OnInit {
       minHeight: 'auto',
       maxHeight: 'auto',
       data: item
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+
+  public addProject() {
+    const dialogRef = this.dialog.open(AddProjectModalComponent, {
+      width: '640px',
+      height: 'calc(100vh - 8em)',
+      minHeight: 'auto',
+      maxHeight: 'auto',
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
