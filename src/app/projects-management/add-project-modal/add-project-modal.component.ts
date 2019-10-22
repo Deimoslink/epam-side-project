@@ -1,9 +1,13 @@
-import {Component, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {ListItem, TypeaheadSource} from '../../shared/interfaces';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Component} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import {ApiService} from '../../shared/api.service';
-import {map} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatChipInputEvent} from "@angular/material";
+
+export interface Chip {
+  name: string;
+}
 
 @Component({
   selector: 'tdct-add-project-modal',
@@ -22,6 +26,27 @@ export class AddProjectModalComponent {
     this.fg = this.fb.group({
       projectName: new FormControl({value: '', disabled: false}, Validators.required),
     });
+  }
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  public businessEntities: Chip[] = [];
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if ((value || '').trim()) {
+      this.businessEntities.push({name: value.trim()});
+    }
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(be: Chip): void {
+    const index = this.businessEntities.indexOf(be);
+    if (index >= 0) {
+      this.businessEntities.splice(index, 1);
+    }
   }
 
   onCancel(): void {
