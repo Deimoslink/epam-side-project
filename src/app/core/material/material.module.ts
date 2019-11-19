@@ -16,7 +16,7 @@ import {
   MatRadioModule,
   MatSidenavModule,
   MatSortModule,
-  MatTableModule
+  MatTableModule, MatTabsModule
 } from '@angular/material';
 
 
@@ -39,7 +39,8 @@ import {
     MatProgressSpinnerModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule
   ],
   exports: [
     MatSidenavModule,
@@ -59,7 +60,8 @@ import {
     MatProgressSpinnerModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule
   ],
 })
 export class MaterialModule { }

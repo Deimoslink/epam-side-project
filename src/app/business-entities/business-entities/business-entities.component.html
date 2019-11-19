@@ -1,1 +1,54 @@
-<p>business-entities works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="mat-elevation-z8 position-relative mt-5 p-4 table-wrapper">
+        <mat-table matSort
+                   class="w-100"
+                   [matSortActive]="defaultSortOrder.active"
+                   [matSortDirection]="defaultSortOrder.direction"
+                   [dataSource]="data"
+                   [matSortDisableClear]="true"
+                   (matSortChange)="sortChanged($event)">
+
+          <ng-container *ngFor="let column of COLUMNS" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-form-field *ngIf="column !== 'id'" class="table-header-input-wrapper">
+                <input matInput
+                       ngModel
+                       (ngModelChange)="filterChanged(column, $event)"
+                       [placeholder]="PLACEHOLDERS[column]">
+              </mat-form-field>
+              <div *ngIf="column === 'projectName' || column === 'businessEntity'" mat-sort-header class="table-header-sort-button-wrapper"></div>
+            </mat-header-cell>
+
+            <mat-cell *matCellDef="let element">
+              <ng-container *ngIf="column === 'id'">
+                <button mat-mini-fab
+                        color="primary"
+                        (click)="editBusinessEntity(element)"
+                        class="ml-2 mat-elevation-z4"><i class="fa fa-edit"></i></button>
+              </ng-container>
+              <span *ngIf="column === 'projectName' || column === 'businessEntity'">{{element[column]}}</span>
+              <span *ngIf="column === 'properties' || column === 'functions'">{{element[column].join(', ')}}</span>
+            </mat-cell>
+
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="COLUMNS"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: COLUMNS;"></mat-row>
+
+        </mat-table>
+        <div *ngIf="!data || !data.length" class="mt-5 mb-5 text-center">No results found</div>
+        <mat-progress-bar *ngIf="loadingInProgress" mode="indeterminate"></mat-progress-bar>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                       [pageSize]="pageSize"
+                       [length]="totalElements"
+                       (page)="pageChanged($event)"
+                       [showFirstLastButtons]="true"></mat-paginator>
+        <div class="table-footer-controls">
+          <button mat-raised-button color="primary" (click)="addBusinessEntity()">Add New Business Entity</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

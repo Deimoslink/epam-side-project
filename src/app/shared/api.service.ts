@@ -11,7 +11,7 @@ export class ApiService {
   private readonly BASE_URL = 'https://json-server-backend.herokuapp.com/';
   // private readonly BASE_URL = 'http://localhost:3000/';
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(public readonly http: HttpClient) { }
 
   private queryToParams(query: PaginatedRequestQuery): UrlParams {
     const pageIndex: number = query.pageIndex + 1;
@@ -33,14 +33,23 @@ export class ApiService {
     }, filters);
   }
 
-  public getProjects(query: PaginatedRequestQuery): Observable<any> {
+  public getProjects = (query: PaginatedRequestQuery): Observable<any> => {
     return this.http.get<any>(
       this.BASE_URL + 'data',
       {
         observe: 'response',
         params: this.queryToParams(query)
       });
-  }
+  };
+
+  public getBusinessEntities = (query: PaginatedRequestQuery): Observable<any> => {
+    return this.http.get<any>(
+      this.BASE_URL + 'businessEntities',
+      {
+        observe: 'response',
+        params: this.queryToParams(query)
+      });
+  };
 
   public findUsers(query: string): Observable<any> {
     return this.http.get<any>(this.BASE_URL + 'users?name_like=' + query);
