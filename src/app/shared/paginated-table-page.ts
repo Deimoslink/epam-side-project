@@ -3,10 +3,10 @@ import {MatPaginator, PageEvent, Sort} from '@angular/material';
 import {Subject} from 'rxjs';
 import {Filters, PaginatedRequestQuery} from './interfaces';
 import {debounceTime, map, merge, scan, takeUntil} from 'rxjs/operators';
+import {Unsubscribe} from './unsubscribe';
 
-export abstract class PaginatedTablePage implements OnInit, OnDestroy {
+export abstract class PaginatedTablePage extends Unsubscribe implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  private subscription = new Subject<void>();
   private filters = new Subject<Filters>();
   private pagination = new Subject<PageEvent>();
   private sorting = new Subject<Sort>();
@@ -23,7 +23,7 @@ export abstract class PaginatedTablePage implements OnInit, OnDestroy {
 
   public loadingInProgress = false;
 
-  constructor(public paginatedRequest: any) {}
+  constructor(public paginatedRequest: any) {super()}
 
   public sortChanged(sort: Sort) {
     this.sorting.next(sort);
@@ -71,8 +71,4 @@ export abstract class PaginatedTablePage implements OnInit, OnDestroy {
     this.requests.next({pageIndex: 0, pageSize: this.pageSize, filters: null, sort: this.defaultSortOrder});
   }
 
-  ngOnDestroy(): void {
-    this.subscription.next();
-    this.subscription.complete();
-  }
 }

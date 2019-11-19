@@ -35,7 +35,7 @@ export class ApiService {
 
   public getProjects = (query: PaginatedRequestQuery): Observable<any> => {
     return this.http.get<any>(
-      this.BASE_URL + 'data',
+      this.BASE_URL + 'projects',
       {
         observe: 'response',
         params: this.queryToParams(query)
@@ -50,6 +50,10 @@ export class ApiService {
         params: this.queryToParams(query)
       });
   };
+
+  public addProject(body: any): Observable<null> {
+    return this.http.post<null>(this.BASE_URL + 'projects', body);
+  }
 
   public findUsers(query: string): Observable<any> {
     return this.http.get<any>(this.BASE_URL + 'users?name_like=' + query);

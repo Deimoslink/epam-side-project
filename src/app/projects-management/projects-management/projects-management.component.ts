@@ -16,11 +16,12 @@ export class ProjectsManagementComponent extends PaginatedTablePage implements O
     active: 'name',
     direction: 'asc'
   };
-  public readonly COLUMNS = ['id', 'name', 'company', 'balance'];
+  public readonly COLUMNS = ['id', 'projectName', 'projectCode', 'projectOwner.name', 'projectManager.name'];
   public readonly PLACEHOLDERS = {
-    'name': 'Manager Name',
-    'company': 'Project Name',
-    'balance': 'Balance'
+    'projectName': 'Project Name',
+    'projectCode': 'Project Code',
+    'projectOwner.name': 'Project Owner',
+    'projectManager.name': 'Project Manager'
   };
 
   constructor(public api: ApiService, public dialog: MatDialog) {
