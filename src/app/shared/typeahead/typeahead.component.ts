@@ -1,4 +1,4 @@
-import {Component, ElementRef, forwardRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {ListItem, TypeaheadSource} from '../interfaces';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
@@ -25,6 +25,10 @@ import {ErrorStateMatcher} from '@angular/material';
   }],
 })
 export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccessor {
+  @HostBinding('tabindex') tabindex;
+  @HostListener('focus') public onFocus() {
+    this.inputFocused();
+  }
   @Input() public placeholder = 'type to search';
   @Input() public source: TypeaheadSource;
   public _control: AbstractControl;
@@ -54,7 +58,15 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
     this.closeOptions = this.closeOptions.bind(this);
   }
 
-  private onTouchedCallback() {
+  public onBlur() {
+    const self = this;
+    setTimeout(() => {
+      this.onTouchedCallback();
+      self.hideInput = true;
+    }, 100)
+  }
+
+  public onTouchedCallback() {
   }
 
   private onChangeCallback(item: ListItem | null) {
@@ -99,9 +111,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
 
   public selectMatch(option: ListItem) {
     this.writeValue(option);
-    setTimeout(() => {
-      this.closeOptions();
-    }, 0);
+    this.closeOptions();
   }
 
   public clearSelection(): void {

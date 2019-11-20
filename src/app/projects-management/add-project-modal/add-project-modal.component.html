@@ -21,6 +21,7 @@
     <div class="row">
       <div class="col-4">
         <tdct-typeahead [source]="usersObservable"
+                        tabindex
                         [placeholder]="'project owner'"
                         [control]="fg.controls['projectOwner']"
                         formControlName="projectOwner"></tdct-typeahead>
@@ -29,6 +30,7 @@
     <div class="row">
       <div class="col-4">
         <tdct-typeahead [source]="usersObservable"
+                        tabindex
                         [placeholder]="'project manager'"
                         [control]="fg.controls['projectManager']"
                         formControlName="projectManager"></tdct-typeahead>

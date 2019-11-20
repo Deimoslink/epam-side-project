@@ -1,3 +1,6 @@
+:host:focus {
+  outline: 0;
+}
 .typeahead-wrapper {
   position: relative;
   &:focus {
