@@ -20,12 +20,18 @@
     </div>
     <div class="row">
       <div class="col-4">
-        <tdct-typeahead [source]="usersObservable" [placeholder]="'project owner'" formControlName="projectOwner"></tdct-typeahead>
+        <tdct-typeahead [source]="usersObservable"
+                        [placeholder]="'project owner'"
+                        [control]="fg.controls['projectOwner']"
+                        formControlName="projectOwner"></tdct-typeahead>
       </div>
     </div>
     <div class="row">
       <div class="col-4">
-        <tdct-typeahead [source]="usersObservable" [placeholder]="'project manager'" formControlName="projectManager"></tdct-typeahead>
+        <tdct-typeahead [source]="usersObservable"
+                        [placeholder]="'project manager'"
+                        [control]="fg.controls['projectManager']"
+                        formControlName="projectManager"></tdct-typeahead>
       </div>
     </div>
   </form>

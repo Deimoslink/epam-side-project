@@ -1,9 +1,15 @@
 import {Component, ElementRef, forwardRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {ListItem, TypeaheadSource} from "../interfaces";
-import {debounceTime, distinctUntilChanged, takeUntil} from "rxjs/operators";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Subject} from "rxjs";
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {ListItem, TypeaheadSource} from '../interfaces';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {ErrorStateMatcher} from '@angular/material';
 
 @Component({
   selector: 'tdct-typeahead',
@@ -21,7 +27,15 @@ import {Subject} from "rxjs";
 export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() public placeholder = 'type to search';
   @Input() public source: TypeaheadSource;
+  public _control: AbstractControl;
+  @Input() set control(value: AbstractControl) {
+    this._control = value;
+  };
+  get control(): AbstractControl {
+    return this._control;
+  };
   public disabled = false;
+  public fc = new FormControl({disabled: this.disabled});
   public options: Array<ListItem> = [];
   private _activeItem: ListItem | null = null;
   private keyboardInputs = new Subject<string>();
@@ -29,7 +43,14 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   public showOptions = false;
   public hideInput = true;
 
-  public constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
+  public errorMatcher: ErrorStateMatcher = {
+    isErrorState: (): boolean => {
+      return this.control.touched && !this.control.valid;
+    }
+  };
+
+  public constructor(private sanitizer: DomSanitizer,
+                     private elementRef: ElementRef) {
     this.closeOptions = this.closeOptions.bind(this);
   }
 
@@ -50,7 +71,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
     this.hideInput = false;
     setTimeout(() => {
       this.elementRef.nativeElement.querySelector('#mainInput').focus();
-    }, 10);
+    }, 0);
   }
 
   public sanitize(html: string): SafeHtml {
@@ -80,7 +101,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
     this.writeValue(option);
     setTimeout(() => {
       this.closeOptions();
-    }, 10);
+    }, 0);
   }
 
   public clearSelection(): void {

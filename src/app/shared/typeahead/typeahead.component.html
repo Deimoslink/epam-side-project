@@ -1,3 +1,4 @@
+<form>
 <div tabindex="0" class="typeahead-wrapper">
   <mat-form-field class="example-full-width w-100" [hidden]="hideInput">
     <input
@@ -5,24 +6,23 @@
       #typeahead
       id="mainInput"
       type="text"
-      tabindex="-1"
-      [disabled]="disabled"
-      [placeholder]="placeholder"
+      placeholder="type to search"
+      (blur)="onTouchedCallback()"
       (paste)="onPaste(typeahead.value)"
       (input)="onInput(typeahead.value)">
   </mat-form-field>
   <mat-form-field class="w-100" [hidden]="!hideInput">
-    <mat-label *ngIf="activeItem"></mat-label>
     <input
       matInput
+      [formControl]="fc"
       class="has-clear-button"
       [value]="activeItem ? activeItem.text : ''"
-      [disabled]="disabled"
       type="text"
-      tabindex="-1"
       readonly
+      [errorStateMatcher]="errorMatcher"
       [placeholder]="placeholder"
       (click)="inputFocused()">
+    <mat-error>Field is mandatory</mat-error>
   </mat-form-field>
   <button [hidden]="!hideInput || disabled || !activeItem" class="close clear-button" type="button" (click)="clearSelection()">×</button>
   <ul *ngIf="showOptions && options && options.length" class="dropdown-menu">
@@ -37,3 +37,4 @@
     </li>
   </ul>
 </div>
+</form>
