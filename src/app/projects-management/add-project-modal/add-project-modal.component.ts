@@ -4,7 +4,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {ApiService} from '../../shared/api.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatChipInputEvent} from "@angular/material";
-import {TypeaheadSource} from '../../shared/interfaces';
+import {ListItem, TypeaheadSource} from '../../shared/interfaces';
 import {map, takeUntil} from 'rxjs/operators';
 import {Unsubscribe} from '../../shared/unsubscribe';
 
@@ -32,6 +32,10 @@ export class AddProjectModalComponent extends Unsubscribe {
       projectCode: new FormControl({value: '', disabled: false}, Validators.required),
       projectOwner: new FormControl({value: '', disabled: false}, Validators.required),
       projectManager: new FormControl({value: '', disabled: false}, Validators.required),
+      teamBA: new FormControl({value: null, disabled: false}),
+      teamDEV: new FormControl({value: null, disabled: false}),
+      teamQA: new FormControl({value: null, disabled: false}),
+      teamOther: new FormControl({value: null, disabled: false}),
     });
 
     this.usersObservable = (newQuery: string) => {
@@ -72,12 +76,19 @@ export class AddProjectModalComponent extends Unsubscribe {
     this.dialogRef.close();
   }
 
+  transformFormat(obj: ListItem): any {
+    obj['name'] = obj.text;
+    delete obj.text;
+  }
+
   onSave(): void {
-    const body = Object.assign({}, this.fg.getRawValue());
-    body.projectManager['name'] = body.projectManager.text;
-    delete body.projectManager.text;
-    body.projectOwner['name'] = body.projectOwner.text;
-    delete body.projectOwner.text;
+    const body = JSON.parse(JSON.stringify(this.fg.getRawValue()));
+    this.transformFormat(body.projectManager);
+    this.transformFormat(body.projectOwner);
+    body.teamBA.map(member => this.transformFormat(member));
+    body.teamDEV.map(member => this.transformFormat(member));
+    body.teamQA.map(member => this.transformFormat(member));
+    body.teamOther.map(member => this.transformFormat(member));
     this.apiService.addProject(body).pipe(takeUntil(this.subscription)).subscribe(() => {
       this.dialogRef.close(body);
     });

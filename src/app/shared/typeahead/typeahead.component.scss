@@ -24,6 +24,7 @@
 
 .dropdown-menu {
   display: block !important;
+  top: auto !important;
   max-height: 300px;
   z-index: 6;
   width: 100%;
@@ -64,4 +65,7 @@
   &:not([disabled]) {
     background-color: #fff !important;
   }
+}
+.mat-standard-chip:focus:not(:hover)::after {
+  opacity: 0;
 }

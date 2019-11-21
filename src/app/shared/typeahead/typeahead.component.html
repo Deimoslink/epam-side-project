@@ -1,37 +1,38 @@
-<form>
 <div tabindex="-1" class="typeahead-wrapper">
-  <mat-form-field class="example-full-width w-100" [hidden]="hideInput">
-    <input
-      matInput
-      #typeahead
-      id="mainInput"
-      type="text"
-      placeholder="type to search"
-      tabindex="-1"
-      (blur)="onBlur()"
-      (paste)="onPaste(typeahead.value)"
-      (input)="onInput(typeahead.value)">
-  </mat-form-field>
-  <mat-form-field class="w-100" [hidden]="!hideInput">
-    <input
-      matInput
-      [formControl]="fc"
-      class="has-clear-button"
-      [value]="activeItem ? activeItem.text : ''"
-      type="text"
-      readonly
-      tabindex="-1"
-      [errorStateMatcher]="errorMatcher"
-      [placeholder]="placeholder"
-      (click)="inputFocused()">
-    <mat-error>Field is mandatory</mat-error>
-  </mat-form-field>
+  <form>
+    <mat-form-field class="example-full-width w-100" [hidden]="hideInput">
+      <input
+        matInput
+        #typeahead
+        id="mainInput"
+        type="text"
+        placeholder="type to search"
+        tabindex="-1"
+        (blur)="onBlur()"
+        (paste)="onPaste(typeahead.value)"
+        (input)="onInput(typeahead.value)">
+    </mat-form-field>
+    <mat-form-field class="w-100" [hidden]="!hideInput">
+      <input
+        matInput
+        [formControl]="fc"
+        class="has-clear-button"
+        [value]="activeItem ? activeItem.text : ''"
+        type="text"
+        readonly
+        tabindex="-1"
+        [errorStateMatcher]="errorMatcher"
+        [placeholder]="placeholder"
+        (click)="inputFocused()">
+      <mat-error>Field is mandatory</mat-error>
+    </mat-form-field>
+  </form>
   <button [hidden]="!hideInput || disabled || !activeItem"
           class="close clear-button"
           type="button"
           (click)="clearSelection()">×</button>
   <ul *ngIf="showOptions && options && options.length" class="dropdown-menu">
-    <li *ngFor="let o of options | sortByField : 'text'">
+    <li *ngFor="let o of options | excludeListItems : activeItems | sortByField : 'text'">
       <div class="ui-select-choices-row"
            [ngClass]="{'active': activeItem && o.id === activeItem.id}"
            (click)="selectMatch(o)">
@@ -41,5 +42,14 @@
       </div>
     </li>
   </ul>
+  <mat-chip-list *ngIf="multiselect" [selectable]="false">
+    <mat-chip *ngFor="let item of activeItems"
+              [disableRipple]="true"
+              selected
+              color="primary"
+              (removed)="exclude(item)"
+              [removable]="true">{{item.text}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+  </mat-chip-list>
 </div>
-</form>
+
+

@@ -29,6 +29,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   @HostListener('focus') public onFocus() {
     this.inputFocused();
   }
+  @Input() public multiselect = false;
   @Input() public placeholder = 'type to search';
   @Input() public source: TypeaheadSource;
   public _control: AbstractControl;
@@ -46,6 +47,8 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   private ngUnsubscribe = new Subject<void>();
   public showOptions = false;
   public hideInput = true;
+
+  public activeItems: Array<ListItem> = [];
 
   public errorMatcher: ErrorStateMatcher = {
     isErrorState: (): boolean => {
@@ -69,7 +72,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   public onTouchedCallback() {
   }
 
-  private onChangeCallback(item: ListItem | null) {
+  private onChangeCallback(item: ListItem | null | Array<ListItem>) {
   }
 
   public onClick(e: any) {
@@ -110,8 +113,14 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   }
 
   public selectMatch(option: ListItem) {
-    this.writeValue(option);
-    this.closeOptions();
+    if (this.multiselect) {
+      this.activeItems.push(option);
+      this.options = this.options.slice();
+      this.onChangeCallback(this.activeItems);
+    } else {
+      this.writeValue(option);
+      this.closeOptions();
+    }
   }
 
   public clearSelection(): void {
@@ -130,6 +139,13 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   writeValue(value: ListItem | null) {
     this.activeItem = value;
   }
+
+  public exclude(item: ListItem) {
+    const index = this.activeItems.findIndex(el => el.id === item.id);
+    this.activeItems.splice(index, 1);
+    this.onChangeCallback(this.activeItems);
+  }
+
 
   registerOnChange(fn: any) {
     this.onChangeCallback = fn;
