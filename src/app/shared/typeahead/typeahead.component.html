@@ -16,7 +16,7 @@
         matInput
         [formControl]="fc"
         class="has-clear-button"
-        [value]="activeItem && activeItem[key] ? activeItem[key] : ''"
+        [value]="_activeItem && _activeItem[key] ? _activeItem[key] : ''"
         type="text"
         readonly
         tabindex="-1"
@@ -26,14 +26,14 @@
       <mat-error>Field is mandatory</mat-error>
     </mat-form-field>
   </form>
-  <button [hidden]="!hideInput || disabled || !activeItem"
+  <button [hidden]="!hideInput || disabled || !_activeItem"
           class="close clear-button"
           type="button"
           (click)="clearSelection()">×</button>
   <ul *ngIf="showOptions && options && options.length" class="dropdown-menu">
     <li *ngFor="let o of options | excludeListItems : activeItems | sortByField : key">
       <div class="ui-select-choices-row"
-           [ngClass]="{'active': activeItem && o.id === activeItem.id}"
+           [ngClass]="{'active': multiselect && _activeItem && o.id === _activeItem.id}"
            (click)="selectMatch(o)">
         <a href="javascript:void(0)" class="dropdown-item">
           <div [innerHtml]="sanitize(o[key] | highlight : typeahead.value)"></div>

@@ -54,7 +54,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   public disabled = false;
   public fc = new FormControl({disabled: this.disabled});
   public options: Array<ListItem> = [];
-  private _activeItem: ListItem | null | Array<ListItem> = null;
+  public _activeItem: ListItem | null = null;
   private keyboardInputs = new Subject<string>();
   private ngUnsubscribe = new Subject<void>();
   public showOptions = false;
@@ -144,9 +144,10 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   }
 
   set activeItem(item: ListItem | null | Array<ListItem>) {
-    this._activeItem = item;
     if (Array.isArray(item)) {
       this.activeItems = item;
+    } else {
+      this._activeItem = item;
     }
     this.onChangeCallback(this.activeItem);
   }
