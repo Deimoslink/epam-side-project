@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../shared/api.service';
 import {PaginatedTablePage} from '../../shared/paginated-table-page';
-import {Sort} from '@angular/material';
+import {MatDialog, Sort} from '@angular/material';
+import {AddEditBusinessEntityComponent} from '../add-edit-business-entity/add-edit-business-entity.component';
 
 @Component({
   selector: 'tdct-business-entities',
@@ -21,16 +22,33 @@ export class BusinessEntitiesComponent extends PaginatedTablePage implements OnI
     'functions': 'Functions'
   };
 
-  constructor(public api: ApiService) {
+  constructor(public api: ApiService, public dialog: MatDialog) {
     super(api.getBusinessEntities)
   }
 
-  public editBusinessEntity(element): void {
-    console.log(element);
+  public editBusinessEntity(item: any): void {
+    const dialogRef = this.dialog.open(AddEditBusinessEntityComponent, {
+      width: '640px',
+      height: 'calc(100vh - 8em)',
+      minHeight: 'auto',
+      maxHeight: 'auto',
+      data: item
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   public addBusinessEntity(): void {
-    console.log('new be');
+    const dialogRef = this.dialog.open(AddEditBusinessEntityComponent, {
+      width: '640px',
+      height: 'calc(100vh - 8em)',
+      minHeight: 'auto',
+      maxHeight: 'auto'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
 }

@@ -33,7 +33,7 @@ export class ProjectsManagementComponent extends PaginatedTablePage implements O
       height: 'calc(100vh - 8em)',
       minHeight: 'auto',
       maxHeight: 'auto',
-      data: item,
+      data: item
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
@@ -45,7 +45,7 @@ export class ProjectsManagementComponent extends PaginatedTablePage implements O
       width: '640px',
       height: 'calc(100vh - 8em)',
       minHeight: 'auto',
-      maxHeight: 'auto',
+      maxHeight: 'auto'
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
