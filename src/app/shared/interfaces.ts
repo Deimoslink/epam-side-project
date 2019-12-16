@@ -18,7 +18,7 @@ export interface UrlParams {
 
 export interface ListItem {
   id: number;
-  text: string;
+  [key: string]: any;
 }
 
 export type TypeaheadSource = (newQuery: string) => Observable<Array<ListItem>>;

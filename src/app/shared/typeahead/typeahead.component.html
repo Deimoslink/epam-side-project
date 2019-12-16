@@ -4,7 +4,6 @@
       <input
         matInput
         #typeahead
-        id="mainInput"
         type="text"
         placeholder="type to search"
         tabindex="-1"
@@ -17,7 +16,7 @@
         matInput
         [formControl]="fc"
         class="has-clear-button"
-        [value]="activeItem ? activeItem.text : ''"
+        [value]="activeItem && activeItem[key] ? activeItem[key] : ''"
         type="text"
         readonly
         tabindex="-1"
@@ -32,12 +31,12 @@
           type="button"
           (click)="clearSelection()">×</button>
   <ul *ngIf="showOptions && options && options.length" class="dropdown-menu">
-    <li *ngFor="let o of options | excludeListItems : activeItems | sortByField : 'text'">
+    <li *ngFor="let o of options | excludeListItems : activeItems | sortByField : key">
       <div class="ui-select-choices-row"
            [ngClass]="{'active': activeItem && o.id === activeItem.id}"
            (click)="selectMatch(o)">
         <a href="javascript:void(0)" class="dropdown-item">
-          <div [innerHtml]="sanitize(o.text | highlight : typeahead.value)"></div>
+          <div [innerHtml]="sanitize(o[key] | highlight : typeahead.value)"></div>
         </a>
       </div>
     </li>
@@ -48,7 +47,7 @@
               selected
               color="primary"
               (removed)="exclude(item)"
-              [removable]="true">{{item.text}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+              [removable]="true">{{item[key]}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
   </mat-chip-list>
 </div>
 

@@ -1,4 +1,14 @@
-import {Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {ListItem, TypeaheadSource} from '../interfaces';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
@@ -29,8 +39,10 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   @HostListener('focus') public onFocus() {
     this.inputFocused();
   }
+  @ViewChild('typeahead', {static: false}) typeahead: ElementRef;
   @Input() public multiselect = false;
   @Input() public placeholder = 'type to search';
+  @Input() public key: string = 'text';
   @Input() public source: TypeaheadSource;
   public _control: AbstractControl;
   @Input() set control(value: AbstractControl) {
@@ -42,7 +54,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   public disabled = false;
   public fc = new FormControl({disabled: this.disabled});
   public options: Array<ListItem> = [];
-  private _activeItem: ListItem | null = null;
+  private _activeItem: ListItem | null | Array<ListItem> = null;
   private keyboardInputs = new Subject<string>();
   private ngUnsubscribe = new Subject<void>();
   public showOptions = false;
@@ -52,7 +64,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
 
   public errorMatcher: ErrorStateMatcher = {
     isErrorState: (): boolean => {
-      return this.control.touched && !this.control.valid;
+      return this.control && this.control.touched && !this.control.valid;
     }
   };
 
@@ -85,7 +97,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
     this.showOptions = true;
     this.hideInput = false;
     setTimeout(() => {
-      this.elementRef.nativeElement.querySelector('#mainInput').focus();
+      this.typeahead.nativeElement.focus();
     }, 0);
   }
 
@@ -94,7 +106,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
   }
 
   public closeOptions(): void {
-    this.elementRef.nativeElement.querySelector('#mainInput').value = '';
+    this.typeahead.nativeElement.value = '';
     this.keyboardInputs.next('');
     this.showOptions = false;
     this.hideInput = true;
@@ -127,16 +139,19 @@ export class TypeaheadComponent implements OnInit, OnDestroy, ControlValueAccess
     this.writeValue(null);
   }
 
-  get activeItem(): ListItem | null {
+  get activeItem(): ListItem | null | Array<ListItem> {
     return this._activeItem;
   }
 
-  set activeItem(item: ListItem | null) {
+  set activeItem(item: ListItem | null | Array<ListItem>) {
     this._activeItem = item;
+    if (Array.isArray(item)) {
+      this.activeItems = item;
+    }
     this.onChangeCallback(this.activeItem);
   }
 
-  writeValue(value: ListItem | null) {
+  writeValue(value: ListItem | null | Array<ListItem>) {
     this.activeItem = value;
   }
 

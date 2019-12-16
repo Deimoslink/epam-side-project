@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Sort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material';
 import {ApiService} from "../../shared/api.service";
-import {AddEditProjectComponent} from '../add-edit-project/add-edit-project.component';
 import {AddProjectModalComponent} from "../add-project-modal/add-project-modal.component";
 import {PaginatedTablePage} from '../../shared/paginated-table-page';
 
@@ -29,12 +28,12 @@ export class ProjectsManagementComponent extends PaginatedTablePage implements O
   }
 
   public editProject(item: any) {
-    const dialogRef = this.dialog.open(AddEditProjectComponent, {
+    const dialogRef = this.dialog.open(AddProjectModalComponent, {
       width: '640px',
       height: 'calc(100vh - 8em)',
       minHeight: 'auto',
       maxHeight: 'auto',
-      data: item
+      data: item,
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);

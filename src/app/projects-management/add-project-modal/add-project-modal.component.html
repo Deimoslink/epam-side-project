@@ -24,6 +24,7 @@
                         tabindex
                         [placeholder]="'project owner'"
                         [control]="fg.controls['projectOwner']"
+                        [key]="'name'"
                         formControlName="projectOwner"></tdct-typeahead>
       </div>
     </div>
@@ -33,6 +34,7 @@
                         tabindex
                         [placeholder]="'project manager'"
                         [control]="fg.controls['projectManager']"
+                        [key]="'name'"
                         formControlName="projectManager"></tdct-typeahead>
       </div>
     </div>
@@ -43,6 +45,7 @@
                         [multiselect]="true"
                         [placeholder]="'BA team'"
                         [control]="fg.controls['teamBA']"
+                        [key]="'name'"
                         formControlName="teamBA"></tdct-typeahead>
       </div>
     </div>
@@ -52,8 +55,9 @@
                         tabindex
                         [multiselect]="true"
                         [placeholder]="'DEV team'"
-                        [control]="fg.controls['teamDEV']"
-                        formControlName="teamDEV"></tdct-typeahead>
+                        [control]="fg.controls['teamDev']"
+                        [key]="'name'"
+                        formControlName="teamDev"></tdct-typeahead>
       </div>
     </div>
     <div class="row">
@@ -63,6 +67,7 @@
                         [multiselect]="true"
                         [placeholder]="'QA team'"
                         [control]="fg.controls['teamQA']"
+                        [key]="'name'"
                         formControlName="teamQA"></tdct-typeahead>
       </div>
     </div>
@@ -73,65 +78,11 @@
                         [multiselect]="true"
                         [placeholder]="'additional team'"
                         [control]="fg.controls['teamOther']"
+                        [key]="'name'"
                         formControlName="teamOther"></tdct-typeahead>
       </div>
     </div>
   </form>
-
-  <!--<div class="row mt-3">-->
-    <!--<div class="col-12">-->
-
-      <!--<mat-form-field class="example-chip-list w-100">-->
-        <!--<mat-chip-list #chipList>-->
-          <!--<mat-chip *ngFor="let be of businessEntities" (removed)="remove(be)">-->
-            <!--{{be.name}}-->
-            <!--<mat-icon matChipRemove>cancel</mat-icon>-->
-          <!--</mat-chip>-->
-          <!--<input placeholder="Add Business Entities"-->
-                 <!--[matChipInputFor]="chipList"-->
-                 <!--[matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
-                 <!--[matChipInputAddOnBlur]="true"-->
-                 <!--(matChipInputTokenEnd)="add($event)">-->
-        <!--</mat-chip-list>-->
-      <!--</mat-form-field>-->
-
-    <!--</div>-->
-  <!--</div>-->
-
-  <!--<div class="row">-->
-    <!--<div class="col-12">-->
-      <!--<mat-tab-group>-->
-        <!--<mat-tab label="Business Properties">-->
-          <!--<div class="row m-0">-->
-            <!--<div class="col-4">-->
-              <!--<mat-form-field>-->
-                <!--<input matInput placeholder="add new property">-->
-              <!--</mat-form-field>-->
-            <!--</div>-->
-            <!--<div class="col-4">-->
-              <!--<mat-form-field>-->
-                <!--<input matInput placeholder="select known property">-->
-              <!--</mat-form-field>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</mat-tab>-->
-        <!--<mat-tab label="Business Functions">-->
-          <!--<div class="row m-0">-->
-            <!--<div class="col-4">-->
-              <!--<mat-form-field>-->
-                <!--<input matInput placeholder="add new function">-->
-              <!--</mat-form-field>-->
-            <!--</div>-->
-            <!--<div class="col-4">-->
-              <!--<mat-form-field>-->
-                <!--<input matInput placeholder="select known function">-->
-              <!--</mat-form-field>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</mat-tab>-->
-      <!--</mat-tab-group>-->
-    <!--</div>-->
-  <!--</div>-->
 </div>
 
 <div mat-dialog-actions>
