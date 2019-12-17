@@ -14,6 +14,13 @@
             <mat-header-cell *matHeaderCellDef>
               <mat-form-field *ngIf="column !== 'id'" class="table-header-input-wrapper">
                 <input matInput
+                       *ngIf="column === 'projectName'"
+                       #projectName
+                       ngModel
+                       (ngModelChange)="filterChanged(column, $event)"
+                       [placeholder]="PLACEHOLDERS[column]">
+                <input matInput
+                       *ngIf="column !== 'projectName'"
                        ngModel
                        (ngModelChange)="filterChanged(column, $event)"
                        [placeholder]="PLACEHOLDERS[column]">

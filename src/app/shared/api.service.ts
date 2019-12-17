@@ -55,8 +55,16 @@ export class ApiService {
     return this.http.post<null>(this.BASE_URL + 'projects', body);
   }
 
+  public addBusinessEntity(body: any): Observable<null> {
+    return this.http.post<null>(this.BASE_URL + 'businessEntities', body);
+  }
+
   public findUsers(query: string): Observable<any> {
     return this.http.get<any>(this.BASE_URL + 'users?name_like=' + query);
+  }
+
+  public findProjects(query: string): Observable<any> {
+    return this.http.get<any>(this.BASE_URL + 'projects?projectName_like=' + query);
   }
 
 }

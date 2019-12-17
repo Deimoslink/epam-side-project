@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ApiService} from '../../shared/api.service';
 import {PaginatedTablePage} from '../../shared/paginated-table-page';
 import {MatDialog, Sort} from '@angular/material';
@@ -10,6 +10,7 @@ import {AddEditBusinessEntityComponent} from '../add-edit-business-entity/add-ed
   styleUrls: ['./business-entities.component.scss']
 })
 export class BusinessEntitiesComponent extends PaginatedTablePage implements OnInit, OnDestroy {
+  @ViewChild('projectName', {static: false}) projectName: ElementRef;
   public readonly defaultSortOrder: Sort = {
     active: 'projectName',
     direction: 'asc'
@@ -35,7 +36,10 @@ export class BusinessEntitiesComponent extends PaginatedTablePage implements OnI
       data: item
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      if (result) {
+        this.filterChanged('projectName', result);
+        this.projectName.nativeElement.value = result;
+      }
     });
   }
 
@@ -47,6 +51,10 @@ export class BusinessEntitiesComponent extends PaginatedTablePage implements OnI
       maxHeight: 'auto'
     });
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.filterChanged('projectName', result);
+        this.projectName.nativeElement.value = result;
+      }
       console.log('The dialog was closed', result);
     });
   }

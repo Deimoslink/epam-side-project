@@ -1,0 +1,23 @@
+@import './../../../_variables.scss';
+
+.mat-dialog-actions {
+  bottom: 0.5em;
+  position: absolute;
+  right: 24px;
+  margin-bottom: 0;
+}
+.add-button {
+  position: absolute;
+  right: 0;
+  top: 0.3em;
+  color: $indigo;
+  > i {
+    cursor: pointer;
+  }
+  &.disabled {
+    color: grey;
+    > i {
+      cursor: not-allowed;
+    }
+  }
+}
