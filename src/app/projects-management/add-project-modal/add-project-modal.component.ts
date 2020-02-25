@@ -4,7 +4,8 @@ import {ApiService} from '../../shared/api.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {TypeaheadSource} from '../../shared/interfaces';
 import {Unsubscribe} from '../../shared/unsubscribe';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
+import {Page} from '../../core/interfaces/interfaces';
 
 @Component({
   selector: 'tdct-add-project-modal',
@@ -23,18 +24,24 @@ export class AddProjectModalComponent extends Unsubscribe implements OnInit {
     super();
 
     this.fg = this.fb.group({
-      projectName: new FormControl({value: '', disabled: false}, Validators.required),
-      projectCode: new FormControl({value: '', disabled: false}, Validators.required),
-      projectOwner: new FormControl({value: '', disabled: false}, Validators.required),
-      projectManager: new FormControl({value: '', disabled: false}, Validators.required),
-      teamBA: new FormControl({value: null, disabled: false}),
-      teamDev: new FormControl({value: null, disabled: false}),
-      teamQA: new FormControl({value: null, disabled: false}),
-      teamOther: new FormControl({value: null, disabled: false}),
+      name: new FormControl({value: '', disabled: false}, Validators.required),
+      code: new FormControl({value: '', disabled: false}, Validators.required),
+      owner: new FormControl({value: '', disabled: false}, Validators.required),
+      manager: new FormControl({value: '', disabled: false}, Validators.required),
+      baTeamMembers: new FormControl({value: null, disabled: false}),
+      devTeamMembers: new FormControl({value: null, disabled: false}),
+      qaTeamMembers: new FormControl({value: null, disabled: false}),
+      additionalTeamMembers: new FormControl({value: null, disabled: false}),
     });
 
     this.usersObservable = (newQuery: string) => {
-      return this.apiService.findUsers(newQuery);
+      return this.apiService.findUsersByName(newQuery).pipe(
+          map((el: Page<any>) => {
+            return el.content.map(user => {
+              return {id: user.id, name: user.name}
+            })
+          })
+      );
     };
   }
 
@@ -49,7 +56,10 @@ export class AddProjectModalComponent extends Unsubscribe implements OnInit {
   }
 
   onSave(): void {
-    const body = JSON.parse(JSON.stringify(this.fg.getRawValue()));
+    const body = Object.assign({active: true}, JSON.parse(JSON.stringify(this.fg.getRawValue())));
+    if (this.data && this.data.id) {
+      body['id'] = this.data.id;
+    }
     this.apiService.addProject(body).pipe(takeUntil(this.subscription)).subscribe(() => {
       this.dialogRef.close(body);
     });

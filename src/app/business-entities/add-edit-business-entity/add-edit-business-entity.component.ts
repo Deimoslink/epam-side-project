@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Unsubscribe} from '../../shared/unsubscribe';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../shared/api.service';
 import {TypeaheadSource} from '../../shared/interfaces';
+import {Page} from '../../core/interfaces/interfaces';
 
 @Component({
   selector: 'tdct-add-edit-business-entity',
@@ -28,9 +29,14 @@ export class AddEditBusinessEntityComponent extends Unsubscribe implements OnIni
     });
 
     this.projectsObservable = (newQuery: string) => {
-      return this.apiService.findProjects(newQuery);
+      return this.apiService.findProjectsByName(newQuery).pipe(
+          map((el: Page<any>) => {
+            return el.content.map(user => {
+              return {id: user.id, name: user.name}
+            })
+          })
+      );
     };
-
   }
 
   public functions: Array<string> = [];

@@ -3,6 +3,8 @@ import {ApiService} from '../../shared/api.service';
 import {PaginatedTablePage} from '../../shared/paginated-table-page';
 import {MatDialog, Sort} from '@angular/material';
 import {AddEditBusinessEntityComponent} from '../add-edit-business-entity/add-edit-business-entity.component';
+import {PaginatedRequestQuery} from '../../shared/interfaces';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'tdct-business-entities',
@@ -15,16 +17,26 @@ export class BusinessEntitiesComponent extends PaginatedTablePage implements OnI
     active: 'projectName',
     direction: 'asc'
   };
-  public readonly COLUMNS = ['id', 'projectName', 'businessEntity', 'properties', 'functions'];
+  public readonly COLUMNS = ['id', 'project', 'name', 'properties', 'functions'];
   public readonly PLACEHOLDERS = {
-    'projectName': 'Project Name',
-    'businessEntity': 'Business Entity',
+    'project': 'Project Name',
+    'name': 'Business Entity',
     'properties': 'Properties',
     'functions': 'Functions'
   };
 
   constructor(public api: ApiService, public dialog: MatDialog) {
-    super(api.getBusinessEntities)
+    super()
+  }
+
+  public populateTable(query: PaginatedRequestQuery): void {
+    this.api.getBusinessEntities(query).pipe(takeUntil(this.subscription))
+        .subscribe(res => {
+          console.log(res);
+          this.totalElements = res.totalItems;
+          this.data = res.content;
+          this.loadingInProgress = false;
+        });
   }
 
   public editBusinessEntity(item: any): void {

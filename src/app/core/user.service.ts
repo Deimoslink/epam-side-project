@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
-import {User} from './interfaces/user.interface';
+import {UserView} from './interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private user: User | null = {id: 'string', name: 'string'};
+  private user: UserView | null = {id: 'string', name: 'string'};
 
   constructor() {}
 
-  public setUser(user: User | null) {
+  public setUser(user: UserView | null) {
     this.user = user;
   }
 
-  public getUser(): User | null {
+  public getUser(): UserView | null {
     return this.user;
   }
 

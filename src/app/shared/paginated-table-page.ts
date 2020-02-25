@@ -2,7 +2,7 @@ import {OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent, Sort} from '@angular/material';
 import {Subject} from 'rxjs';
 import {Filters, PaginatedRequestQuery} from './interfaces';
-import {debounceTime, map, merge, scan, takeUntil} from 'rxjs/operators';
+import {debounceTime, map, merge, scan, takeUntil, tap} from 'rxjs/operators';
 import {Unsubscribe} from './unsubscribe';
 
 export abstract class PaginatedTablePage extends Unsubscribe implements OnInit, OnDestroy {
@@ -15,15 +15,16 @@ export abstract class PaginatedTablePage extends Unsubscribe implements OnInit, 
   public filterState: Filters = {};
   public readonly defaultSortOrder: Sort;
 
-  public data: any[];
+  public data: Array<any>;
   public pageSize = 10;
   public totalElements = 0;
   public readonly COLUMNS;
   public readonly PLACEHOLDERS;
 
   public loadingInProgress = false;
+  protected refresh = new Subject<void>();
 
-  constructor(public paginatedRequest: any) {super()}
+  protected constructor() {super()}
 
   public sortChanged(sort: Sort) {
     this.sorting.next(sort);
@@ -34,12 +35,16 @@ export abstract class PaginatedTablePage extends Unsubscribe implements OnInit, 
   }
 
   public pageChanged(pageEvent: PageEvent) {
+    console.log(pageEvent);
     this.pagination.next(pageEvent);
   }
+
+  protected abstract populateTable(query: PaginatedRequestQuery): void;
 
   ngOnInit() {
     this.requests.pipe(
       takeUntil(this.subscription),
+      merge(this.refresh),
       merge(this.pagination.pipe(
         map(pageEvent => ({pageIndex: pageEvent.pageIndex, pageSize: pageEvent.pageSize}))
       )),
@@ -55,16 +60,10 @@ export abstract class PaginatedTablePage extends Unsubscribe implements OnInit, 
       merge(this.sorting.pipe(
         map(sorting => ({sort: sorting}))
       )),
-      scan((query: PaginatedRequestQuery, part) => ({...query, ...part}), {}),
+      scan((query: PaginatedRequestQuery, part) => ({...query, ...part}), {} as PaginatedRequestQuery),
       map((query: PaginatedRequestQuery) => {
         this.loadingInProgress = true;
-        this.paginatedRequest(query).pipe(
-          takeUntil(this.subscription)
-        ).subscribe(res => {
-          this.totalElements = parseInt(res.headers.get('X-Total-Count'));
-          this.data = res.body;
-          this.loadingInProgress = false;
-        });
+        this.populateTable(query);
       })
     ).subscribe();
 

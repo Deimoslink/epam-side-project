@@ -14,18 +14,18 @@
             <mat-header-cell *matHeaderCellDef>
               <mat-form-field *ngIf="column !== 'id'" class="table-header-input-wrapper">
                 <input matInput
-                       *ngIf="column === 'projectName'"
+                       *ngIf="column === 'project'"
                        #projectName
                        ngModel
                        (ngModelChange)="filterChanged(column, $event)"
                        [placeholder]="PLACEHOLDERS[column]">
                 <input matInput
-                       *ngIf="column !== 'projectName'"
+                       *ngIf="column !== 'project'"
                        ngModel
                        (ngModelChange)="filterChanged(column, $event)"
                        [placeholder]="PLACEHOLDERS[column]">
               </mat-form-field>
-              <div *ngIf="column === 'projectName' || column === 'businessEntity'" mat-sort-header class="table-header-sort-button-wrapper"></div>
+              <div *ngIf="column === 'project' || column === 'name'" mat-sort-header class="table-header-sort-button-wrapper"></div>
             </mat-header-cell>
 
             <mat-cell *matCellDef="let element">
@@ -35,8 +35,9 @@
                         (click)="editBusinessEntity(element)"
                         class="ml-2 mat-elevation-z4"><i class="fa fa-edit"></i></button>
               </ng-container>
-              <span *ngIf="column === 'projectName' || column === 'businessEntity'">{{element[column]}}</span>
-              <span *ngIf="column === 'properties' || column === 'functions'">{{element[column].join(', ')}}</span>
+              <span *ngIf="column === 'project'">{{element[column] ? element[column].name : ''}}</span>
+              <span *ngIf="column === 'name'">{{element[column]}}</span>
+              <span *ngIf="column === 'properties' || column === 'functions'">{{element[column] ? element[column].join(', ') : ''}}</span>
             </mat-cell>
 
           </ng-container>

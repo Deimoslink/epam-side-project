@@ -28,9 +28,9 @@
                         (click)="editProject(element)"
                         class="ml-2 mat-elevation-z4"><i class="fa fa-edit"></i></button>
               </ng-container>
-              <span *ngIf="column === 'projectName' || column === 'projectCode'">{{element[column]}}</span>
-              <span *ngIf="column === COLUMNS[3]">{{element.projectOwner.name}}</span>
-              <span *ngIf="column === COLUMNS[4]">{{element.projectManager.name}}</span>
+              <span *ngIf="column === 'name' || column === 'code'">{{element[column]}}</span>
+              <span *ngIf="column === COLUMNS[3]">{{element.owner.name}}</span>
+              <span *ngIf="column === COLUMNS[4]">{{element.manager.name}}</span>
             </mat-cell>
 
           </ng-container>
